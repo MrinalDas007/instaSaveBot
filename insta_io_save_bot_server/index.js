@@ -2,6 +2,7 @@ var express = require("express")
 var app = express()
 var bodyParser = require("body-parser")
 const axios = require("axios")
+const {API_TOKEN} =require('./config/keys')
 
 app.use(bodyParser.json()) // for parsing application/json
 app.use(
@@ -16,7 +17,7 @@ app.post("/new-message", function(req, res) {
 
 	//Each message contains "text" and a "chat" object, which has an "id" which is the chat id
 
-	if (!message || message.text.toLowerCase().indexOf("marco") < 0) {
+	if (!message || message.text.toLowerCase().indexOf("hey") < 0) {
 		// In case a message is not present, or if our message does not have the word marco in it, do nothing and return an empty response
 		return res.end()
 	}
@@ -26,7 +27,7 @@ app.post("/new-message", function(req, res) {
 	// Remember to use your own API toked instead of the one below  "https://api.telegram.org/bot<your_api_token>/sendMessage"
 	axios
 		.post(
-			"https://api.telegram.org/bot5943756988:AAGOBrfwmGorOy1BlaO9rLhCkFBUIRj98Go/sendMessage",
+			"https://api.telegram.org/bot" + API_TOKEN + "/sendMessage",
 			{
 				chat_id: message.chat.id,
 				text: "Ready!!",
