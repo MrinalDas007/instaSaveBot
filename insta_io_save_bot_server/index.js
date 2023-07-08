@@ -2,7 +2,6 @@ var express = require("express")
 var app = express()
 var bodyParser = require("body-parser")
 const axios = require("axios")
-const {API_TOKEN} =require('./config/keys')
 
 app.use(bodyParser.json()) // for parsing application/json
 app.use(
@@ -27,7 +26,7 @@ app.post("/new-message", function(req, res) {
 	// Remember to use your own API toked instead of the one below  "https://api.telegram.org/bot<your_api_token>/sendMessage"
 	axios
 		.post(
-			"https://api.telegram.org/bot" + API_TOKEN + "/sendMessage",
+			"https://api.telegram.org/bot" + process.env.API_TOKEN + "/sendMessage",
 			{
 				chat_id: message.chat.id,
 				text: "Ready!!",

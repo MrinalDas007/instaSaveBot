@@ -1,4 +1,5 @@
 # See https://help.github.com/articles/ignoring-files/ for more about ignoring files.
+# curl -F "url=https://insta-io-save-bot-server.onrender.com/new-message"  https://api.telegram.org/bot5943756988:AAGOBrfwmGorOy1BlaO9rLhCkFBUIRj98Go/setWebhook
 
 # dependencies
 /node_modules
