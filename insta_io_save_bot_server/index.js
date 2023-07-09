@@ -70,7 +70,8 @@ app.post("/new-message", async (req, res) => {
         res.end("Error :" + err);
       });
   } else if (
-    message.text.toLowerCase().indexOf("https://www.instagram.com/") >= 0
+    message.text.toLowerCase().indexOf("https://www.instagram.com/") >= 0 ||
+    message.text.toLowerCase().indexOf("https://instagram.com/") >= 0
   ) {
     console.log("Link request received");
     videoLink = undefined;
@@ -111,8 +112,25 @@ app.post("/new-message", async (req, res) => {
         res.end("Error :" + err);
       });
   } else {
-    console.log("Desired message not found: " + message.text);
-    return res.end();
+    console.log("Bot not ready");
+    axios
+      .post(
+        "https://api.telegram.org/bot" + process.env.API_TOKEN + "/sendMessage",
+        {
+          chat_id: message.chat.id,
+          text: "Sorry!! Please provide correct input.",
+        }
+      )
+      .then((response) => {
+        // We get here if the message was successfully posted
+        console.log("Message posted");
+        res.end("ok");
+      })
+      .catch((err) => {
+        // ...and here if it was not
+        console.log("Error :", err);
+        res.end("Error :" + err);
+      });
   }
 });
 
