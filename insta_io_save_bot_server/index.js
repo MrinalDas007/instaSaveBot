@@ -24,8 +24,8 @@ const getVideo = (url) => {
   // searches the html for the videoString
   console.log("Processing Video Link...");
   const videoString = $("meta[property=og:description]").next().text();
-  const videoDict = JSON.parse(videoString);
-  const videoUrl = videoDict["video"][0]["contentUrl"];
+  videoDict = JSON.parse(videoString);
+  videoUrl = videoDict["video"][0]["contentUrl"];
   // returns the videoString
   return videoUrl;
 };
