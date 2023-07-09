@@ -33,17 +33,12 @@ const getVideo = (url) => {
 //This is the route the API will call
 app.post("/new-message", function (req, res) {
   const { message } = req.body;
-  console.log("Message received: " + message);
+  console.log("Message received: " + message.text);
 
   //Each message contains "text" and a "chat" object, which has an "id" which is the chat id
-  if (
-    !message ||
-    message.text.toLowerCase().indexOf("hey") < 0 ||
-    message.text.toLowerCase().indexOf("hi") < 0 ||
-    message.text.toLowerCase().indexOf("https://www.instagram.com/") < 0
-  ) {
+  if (!message) {
     // In case a message is not present, or if our message does not have the word marco in it, do nothing and return an empty response
-    console.log("Desired message not found: " + message);
+    console.log("Desired message not found: " + message.text);
     return res.end();
   }
 
@@ -81,7 +76,7 @@ app.post("/new-message", function (req, res) {
     try {
       // call the getVideo function, wait for videoString and store it
       // in the videoLink variable
-      videoLink = getVideo(message);
+      videoLink = getVideo(message.text);
       // if we get a videoLink, send the videoLink back to the user
       if (videoLink !== undefined) {
         videoLink = videoLink;
