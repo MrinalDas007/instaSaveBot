@@ -72,7 +72,7 @@ app.post("/new-message", function (req, res) {
     message.text.toLowerCase().indexOf("https://www.instagram.com/") >= 0
   ) {
     console.log("Link request received");
-    const videoLink = undefined;
+    videoLink = undefined;
     try {
       // call the getVideo function, wait for videoString and store it
       // in the videoLink variable
