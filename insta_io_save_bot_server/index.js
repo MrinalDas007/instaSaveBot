@@ -16,10 +16,13 @@ app.use(cors());
 // accepts the URL of an instagram page
 const getVideo = async (url) => {
   // calls axios to go to the page and stores the result in the html variable
+  console.log("Getting html...");
   const html = await axios.get(url);
   // calls cheerio to process the html received
+  console.log("Processing html...");
   const $ = cheerio.load(html.data);
   // searches the html for the videoString
+  console.log("Processing Video Link...");
   const videoString = $("meta[property=og:description]").next().text();
   const videoDict = JSON.parse(videoString);
   const videoUrl = videoDict["video"][0]["contentUrl"];
@@ -30,6 +33,7 @@ const getVideo = async (url) => {
 //This is the route the API will call
 app.post("/new-message", async (req, res) => {
   const { message } = req.body;
+  console.log("Message received: " + message);
 
   //Each message contains "text" and a "chat" object, which has an "id" which is the chat id
   if (
@@ -39,16 +43,18 @@ app.post("/new-message", async (req, res) => {
     message.text.toLowerCase().indexOf("https://www.instagram.com/") < 0
   ) {
     // In case a message is not present, or if our message does not have the word marco in it, do nothing and return an empty response
+    console.log("Desired message not found: " + message);
     return res.end();
   }
 
   // If we've gotten this far, it means that we have received a message containing the word "marco".
   // Respond by hitting the telegram bot API and responding to the appropriate chat_id with the word "Polo!!"
   // Remember to use your own API toked instead of the one below  "https://api.telegram.org/bot<your_api_token>/sendMessage"
-  if (
+  else if (
     message.text.toLowerCase().indexOf("hey") >= 0 ||
     message.text.toLowerCase().indexOf("hi") >= 0
   ) {
+    console.log("Bot ready");
     axios
       .post(
         "https://api.telegram.org/bot" + process.env.API_TOKEN + "/sendMessage",
@@ -70,11 +76,12 @@ app.post("/new-message", async (req, res) => {
   } else if (
     message.text.toLowerCase().indexOf("https://www.instagram.com/") >= 0
   ) {
+    console.log("Link request received");
     const videoLink = undefined;
     try {
       // call the getVideo function, wait for videoString and store it
       // in the videoLink variable
-      videoLink = await getVideo(message.text);
+      videoLink = await getVideo(message);
       // if we get a videoLink, send the videoLink back to the user
       if (videoLink !== undefined) {
         videoLink = videoLink;
@@ -86,6 +93,8 @@ app.post("/new-message", async (req, res) => {
       // handle any issues with invalid links
       videoLink = "There is a problem with the link you have provided.";
     }
+
+    console.log("Video link found: " + videoLink);
 
     axios
       .post(
