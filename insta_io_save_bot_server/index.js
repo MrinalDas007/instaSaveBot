@@ -14,10 +14,10 @@ app.use(
 app.use(cors());
 
 // accepts the URL of an instagram page
-const getVideo = async (url) => {
+const getVideo = (url) => {
   // calls axios to go to the page and stores the result in the html variable
   console.log("Getting html...");
-  const html = await axios.get(url);
+  const html = axios.get(url);
   // calls cheerio to process the html received
   console.log("Processing html...");
   const $ = cheerio.load(html.data);
@@ -31,7 +31,7 @@ const getVideo = async (url) => {
 };
 
 //This is the route the API will call
-app.post("/new-message", async (req, res) => {
+app.post("/new-message", function (req, res) {
   const { message } = req.body;
   console.log("Message received: " + message);
 
@@ -81,7 +81,7 @@ app.post("/new-message", async (req, res) => {
     try {
       // call the getVideo function, wait for videoString and store it
       // in the videoLink variable
-      videoLink = await getVideo(message);
+      videoLink = getVideo(message);
       // if we get a videoLink, send the videoLink back to the user
       if (videoLink !== undefined) {
         videoLink = videoLink;
