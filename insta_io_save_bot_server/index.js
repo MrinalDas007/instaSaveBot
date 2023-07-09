@@ -109,6 +109,9 @@ app.post("/new-message", function (req, res) {
         console.log("Error :", err);
         res.end("Error :" + err);
       });
+  } else {
+    console.log("Desired message not found: " + message.text);
+    return res.end();
   }
 });
 
