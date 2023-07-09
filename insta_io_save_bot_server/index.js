@@ -20,12 +20,12 @@ const getVideo = async (url) => {
   const html = await axios.get(url);
   // calls cheerio to process the html received
   console.log("Processing html...");
-  $ = cheerio.load(html.data);
+  const $ = cheerio.load(html.data);
   // searches the html for the videoString
   console.log("Processing Video Link...");
-  videoString = $("meta[property=og:description]").next().text();
-  videoDict = JSON.parse(videoString);
-  videoUrl = videoDict["video"][0]["contentUrl"];
+  const videoString = $("meta[property=og:description]").next().text();
+  const videoDict = JSON.parse(videoString);
+  const videoUrl = videoDict["video"][0]["contentUrl"];
   // returns the videoString
   return videoUrl;
 };
