@@ -46,8 +46,8 @@ app.post("/new-message", function (req, res) {
   // Respond by hitting the telegram bot API and responding to the appropriate chat_id with the word "Polo!!"
   // Remember to use your own API toked instead of the one below  "https://api.telegram.org/bot<your_api_token>/sendMessage"
   else if (
-    message.text.toLowerCase().indexOf("hey") >= 0 ||
-    message.text.toLowerCase().indexOf("hi") >= 0
+    message.text.toLowerCase().indexOf("hey") == 0 ||
+    message.text.toLowerCase().indexOf("hi") == 0
   ) {
     console.log("Bot ready");
     axios
