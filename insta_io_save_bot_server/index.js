@@ -25,6 +25,7 @@ const getVideo = async (url) => {
   console.log("Processing Video Link...");
   const videoString = $("meta[property=og:description]").next().text();
   const videoDict = JSON.parse(videoString);
+  console.log("Video Content: " + videoDict);
   const videoUrl = videoDict["video"][0]["contentUrl"];
   // returns the videoString
   return videoUrl;
