@@ -17,6 +17,7 @@ const getVideo = async (url) => {
   var videoUrl = undefined;
 
   // API call to get the downloadable video url
+  console.log("Processing Link...");
   const options = {
     method: "GET",
     url: process.env.API_URL,
@@ -31,11 +32,16 @@ const getVideo = async (url) => {
 
   try {
     const response = await axios.request(options);
-    videoUrl = response.data["media"];
+    if (url.indexOf("stories") >= 0) {
+      videoUrl = response.data["stories"][0]["media"];
+    } else {
+      videoUrl = response.data["media"];
+    }
   } catch (error) {
-    console.error(error);
+    console.error("Error Found: " + error);
   }
   // returns the videoString
+  console.log("Video Link: " + videoUrl);
   return videoUrl;
 };
 
@@ -141,29 +147,6 @@ app.post("/new-message", async (req, res) => {
       });
   }
 });
-
-// the callback is an async function
-// app.post("/api/download", async (request, response) => {
-//   console.log("request coming in...");
-
-//   try {
-//     // call the getVideo function, wait for videoString and store it
-//     // in the videoLink variable
-//     const videoLink = await getVideo(request.body.url);
-//     // if we get a videoLink, send the videoLink back to the user
-//     if (videoLink !== undefined) {
-//       response.json({ downloadLink: videoLink });
-//     } else {
-//       // if the videoLink is invalid, send a JSON response back to the user
-//       response.json({ error: "The link you have entered is invalid. " });
-//     }
-//   } catch (err) {
-//     // handle any issues with invalid links
-//     response.json({
-//       error: "There is a problem with the link you have provided.",
-//     });
-//   }
-// });
 
 // Finally, start our server
 app.listen(3000, function () {
